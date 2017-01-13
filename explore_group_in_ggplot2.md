@@ -22,8 +22,8 @@ dt <- data.table(
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp))) + 
-    geom_point(size = 3) + 
+dt %>% ggplot(aes(x, y, col = I(grp))) +
+    geom_point(size = 3) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -33,9 +33,9 @@ We may want to join the points with segments. By default, the line geom inherits
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp))) + 
-    geom_point(size = 3) + 
-    geom_line() + 
+dt %>% ggplot(aes(x, y, col = I(grp))) +
+    geom_point(size = 3) +
+    geom_line() +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -45,21 +45,21 @@ We may want to link the points with segments joining together. One option is to 
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp))) + 
-    geom_point(size = 3) + 
-    geom_line(aes(col = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp))) +
+    geom_point(size = 3) +
+    geom_line(aes(col = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
 ![](explore_group_in_ggplot2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 Another option is to overwrite the silently set `group` aesthetic and setting it constant. This way the segments will inherit their color from their (left) neighbour point.
- 
+
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp))) + 
-    geom_point(size = 3) + 
-    geom_line(aes(group = 'arbitrary_constant_value')) + 
+dt %>% ggplot(aes(x, y, col = I(grp))) +
+    geom_point(size = 3) +
+    geom_line(aes(group = 'arbitrary_constant_value')) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -80,37 +80,37 @@ dt_mixed <- data.table(
 
 
 ```r
-dt_mixed %>% ggplot(aes(x, y, col = I(grp))) + 
-    geom_point(size = 3) + 
-    geom_line(aes(group = 'arbitrary_constant_value')) + 
+dt_mixed %>% ggplot(aes(x, y, col = I(grp))) +
+    geom_point(size = 3) +
+    geom_line(aes(group = 'arbitrary_constant_value')) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
 ![](explore_group_in_ggplot2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
- 
+
 We can safely conclude that the order in which the points are linked is left-to-right, order of appearance.
 
-### Case 2: we have a global mapping not applicable to lines 
+### Case 2: we have a global mapping not applicable to lines
 
 A slightly different case when the aesthetic defined in the `ggplot` call is not applicable to lines. It will still effect the silently set group aesthetics.
 
 
 ```r
-dt %>% ggplot(aes(x, y, pch = grp)) + 
-    geom_point(size = 3) + 
-    geom_line() + 
+dt %>% ggplot(aes(x, y, pch = grp)) +
+    geom_point(size = 3) +
+    geom_line() +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
 ![](explore_group_in_ggplot2_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
-We can still overwrite the `pch` aesthetics in the `geom_line` call thus silently unsetting the `group` variable. 
+We can still overwrite the `pch` aesthetics in the `geom_line` call thus silently unsetting the `group` variable.
 
 
 ```r
-dt %>% ggplot(aes(x, y, pch = grp)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(pch = NULL)) + 
+dt %>% ggplot(aes(x, y, pch = grp)) +
+    geom_point(size = 3) +
+    geom_line(aes(pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -124,9 +124,9 @@ However in this case explicitly setting the `group` aesthetics is inarguably mor
 
 
 ```r
-dt %>% ggplot(aes(x, y, pch = grp)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(group = 1)) + 
+dt %>% ggplot(aes(x, y, pch = grp)) +
+    geom_point(size = 3) +
+    geom_line(aes(group = 1)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -153,8 +153,8 @@ dt <- data.table(
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) + 
-    geom_point() + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) +
+    geom_point() +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -164,9 +164,9 @@ By default we will have 2 group of 4 points linked together: one group for each 
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) + 
-    geom_point() + 
-    geom_line() + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) +
+    geom_point() +
+    geom_line() +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -176,9 +176,9 @@ One option is to overwrite the color and size mapping in `geom_line`:
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) + 
-    geom_point() + 
-    geom_line(aes(col = NULL, size = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) +
+    geom_point() +
+    geom_line(aes(col = NULL, size = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -189,9 +189,9 @@ Another option is to set the group aesthetics to a constant:
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) + 
-    geom_point() + 
-    geom_line(aes(group = 1)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), size = I(grp_2))) +
+    geom_point() +
+    geom_line(aes(group = 1)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -210,13 +210,13 @@ dt <- data.table(
 )
 ```
 
-By default we have 4 pairwise linked pair of points: one for each combination of the two discrete variables used in the aesthetics call of `ggplot`.
+By default we have 4 pair of pairwise linked points: one for each combination of the two discrete variables used in the aesthetics call of `ggplot`.
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line() + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line() +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -226,9 +226,9 @@ We can overwride one or two of these in the aes call in `geom_line`:
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(pch = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(aes(pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -240,9 +240,9 @@ dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(col = NULL, pch = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(aes(col = NULL, pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -256,9 +256,9 @@ We can also set the group aesthetics to constant or combine these two approaches
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(group = 1)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(aes(group = 1)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -266,9 +266,9 @@ dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(aes(group = 1, pch = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(aes(group = 1, pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -282,9 +282,9 @@ dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(group = 1) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(group = 1) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -294,19 +294,19 @@ The order in which the segments are linked has been changed. But to what? Let's 
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(group = 1, aes(col = NULL)) + 
-    geom_label(aes(label = id), vjust = "inward", hjust = "inward") 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(group = 1, aes(col = NULL)) +
+    geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
 ![](explore_group_in_ggplot2_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(group = 1, aes(pch = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(group = 1, aes(pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -318,9 +318,9 @@ dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
 
 
 ```r
-dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) + 
-    geom_point(size = 3) + 
-    geom_line(group = 1, aes(col = NULL, pch = NULL)) + 
+dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
+    geom_point(size = 3) +
+    geom_line(group = 1, aes(col = NULL, pch = NULL)) +
     geom_label(aes(label = id), vjust = "inward", hjust = "inward")
 ```
 
@@ -331,17 +331,16 @@ dt %>% ggplot(aes(x, y, col = I(grp_1), pch = grp_2)) +
 ![](explore_group_in_ggplot2_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 
-This way in the background we still have the group in aesthetics: it has effect although we overwrote the effect of joining lines, we did not overwrote every effect of the aesthetics mapping. So the order in which the points are linked: first levels of the group, then left to right, then order of appearance in dataset. Check for yourself with the following examples!
+This way in the background we still have the group in aesthetics: it has effect although we overwrote the effect of joining lines, we did not overwrote every effect of the aesthetics mapping. So the order in which the points are linked: first levels of the group, then left to right, then order of appearance in dataset. Check for yourself with the above examples!
 
-*e.g. blue < red, circle < triangle.* 
+*e.g. blue < red, circle < triangle.*
 
 # Conclusion
 
 Group is the interaction of discrete variables set inside `aes` unless explicitly overwritten.
 
-The order in which the points are linked: 
+The order in which the points are linked:
 
 1. order of group levels
 2. left-to-right
 3. order of appearance in data
-
