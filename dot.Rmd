@@ -1,0 +1,46 @@
+---
+title: "the dot symbol"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library("purrr")
+library("magrittr")
+library("data.table")
+```
+
+The dot `(.)` appears in different places in the R ecosystem: purrr, magittr pipe. I will explore and explain what happens if you mix these usages, or nest them, how the dot symbol is special and how it is not.
+
+## Basic usage
+
+### %>% of magrittr
+
+You have to use the dot if the parameter you pipe forward is not the first parameter of your next function or if you use pipe with data.table and use `[]` function.
+
+```{r}
+lipsum::lipsums[1] %>% 
+    stringi::stri_trans_totitle() %>% 
+    gsub(' ', '-', .)
+```
+
+You can also refer to the parameter with `.` if it is the first, but then you do not have to:
+
+```{r}
+lipsum::lipsums[1] %>%
+    stringi::stri_trans_totitle(.) %>% 
+    stringr::str_replace_all(., ' ', '-')
+```
+
+### map of purrr
+
+
+
+## Nested usage
+
+## Mixed usage
+
+
