@@ -37,10 +37,32 @@ lipsum::lipsums[1] %>%
 
 ### map of purrr
 
+```{r}
+consts <- list(
+    'num_hours_in_day' = 24,
+    'num_days_in_week' = 7,
+    'num_months_in_year' = 12
+)
+map_chr(names(consts), ~ stringr::str_c(., ': ', consts[[.]]))
+```
 
+For compact anonymous functions the formula notation with `.` is a shorthand for the more verbose following known from the base R `apply` family.
+
+```{r}
+map_chr(names(consts), function(const_name) {stringr::str_c(const_name, ': ', consts[[const_name]])})
+```
+
+Of course defining your function outside the call to map is always possible and preferable for more complex functions.
 
 ## Nested usage
 
+### Pipe within pipe
+
+### map within map
+
 ## Mixed usage
 
+### Pipe in map
+
+### Map in pipe
 
