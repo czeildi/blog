@@ -1,5 +1,5 @@
 ---
-title: "the dot symbol"
+title: "The dot symbol"
 output: html_document
 ---
 
@@ -35,21 +35,21 @@ lipsum::lipsums[1] %>%
     stringr::str_replace_all(., ' ', '-')
 ```
 
-### map of purrr
+### Map of purrr
 
 ```{r}
-consts <- list(
+calendar_consts <- list(
     'num_hours_in_day' = 24,
     'num_days_in_week' = 7,
     'num_months_in_year' = 12
 )
-map_chr(names(consts), ~ stringr::str_c(., ': ', consts[[.]]))
+map_chr(names(calendar_consts), ~ stringr::str_c(., ': ', calendar_consts[[.]]))
 ```
 
 For compact anonymous functions the formula notation with `.` is a shorthand for the more verbose following known from the base R `apply` family.
 
 ```{r}
-map_chr(names(consts), function(const_name) {stringr::str_c(const_name, ': ', consts[[const_name]])})
+map_chr(names(calendar_consts), function(name) {stringr::str_c(name, ': ', calendar_consts[[name]])})
 ```
 
 Of course defining your function outside the call to map is always possible and preferable for more complex functions.
@@ -58,7 +58,54 @@ Of course defining your function outside the call to map is always possible and 
 
 ### Pipe within pipe
 
-### map within map
+I could not came up with a realistic usage for this as pipe is exactly for avoiding nesting...
+
+### Map within map
+
+```{r}
+consts <- list(
+    'calendar' = calendar_consts,
+    'geo' = list(
+        'num_continents' = 7,
+        'num_states_in_US' = 50
+    )
+)
+map(
+    consts,
+    ~{
+        sub_list <- .
+        map_chr(
+        names(sub_list),
+        ~ stringr::str_c(., ': ', sub_list[[.]])
+    )}
+)
+```
+
+`.` is actually not that different from ordinary variable names which means that scoping rules apply as usual. In the inner if you refer to `.` it means the current element in the inner map. You can either save the outer current element to a variable or define the desired environment for your variable name.
+
+```{r}
+map(
+    consts,
+    ~ map_chr(
+        names(.),
+        ~ stringr::str_c(., ': ', parent.env(environment())$'.'[[.]])
+    )
+)
+```
+
+While the above is possible I do not recommend it as it is difficult to read.
+You could instead do the following:
+
+```{r}
+pasteConstNamesAndValues <- function(const_list) {
+    map_chr(
+        names(const_list),
+        ~ stringr::str_c(., ': ', const_list[[.]])
+    )  
+}
+map(consts, pasteConstNamesAndValues)
+```
+
 
 ## Mixed usage
 
