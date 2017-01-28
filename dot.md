@@ -4,7 +4,7 @@
 
 
 
-The dot `(.)` appears in different places in the R ecosystem: e.g. purrr, magittr's `%>%`. I will explore and explain what happens if you mix these usages, or nest them, how the dot symbol is special and how it is not.
+The dot `.` appears in different places in the R ecosystem: e.g. purrr, magittr's `%>%`. I will explore and explain what happens if you mix these usages, or nest them, how the dot symbol is special and how it is not.
 
 ## Basic usage
 
@@ -55,7 +55,10 @@ For compact anonymous functions the formula notation with `.` is a shorthand for
 
 
 ```r
-map_chr(names(calendar_consts), function(name) {stringr::str_c(name, ': ', calendar_consts[[name]])})
+map_chr(
+    names(calendar_consts),
+    function(name) {stringr::str_c(name, ': ', calendar_consts[[name]])}
+)
 ```
 
 ```
@@ -209,17 +212,16 @@ pasteWithSeparators <- function(const_list, separators) {
 
 
 ```r
-c(': ', ' -- ', '\n') %>% 
+c(': ', ' -- ') %>% 
     pasteWithSeparators(calendar_consts, .)
 ```
 
 ```
 ## [[1]]
 ## [1] "num_hours_in_day: 24"   "num_hours_in_day -- 24"
-## [3] "num_hours_in_day\n24"  
 ## 
 ## [[2]]
-## [1] "num_days_in_week: 7"   "num_days_in_week -- 7" "num_days_in_week\n7"
+## [1] "num_days_in_week: 7"   "num_days_in_week -- 7"
 ```
 
 But it won't work if we inline the function:
@@ -245,27 +247,26 @@ Apparently by using the pipe you have to formally pass `.` as a variable to your
 
 
 ```r
-c(': ', ' -- ', '\n') %>% 
+c(': ', ' -- ') %>% 
     {map(
         names(calendar_consts),
-        ~ stringr::str_c(., c(': ', ' -- ', '\n'), calendar_consts[[.]])
+        ~ stringr::str_c(., c(': ', ' -- '), calendar_consts[[.]])
     )} 
 ```
 
 ```
 ## [[1]]
 ## [1] "num_hours_in_day: 24"   "num_hours_in_day -- 24"
-## [3] "num_hours_in_day\n24"  
 ## 
 ## [[2]]
-## [1] "num_days_in_week: 7"   "num_days_in_week -- 7" "num_days_in_week\n7"
+## [1] "num_days_in_week: 7"   "num_days_in_week -- 7"
 ```
 
 We still have to figure out how to pass the separators to `map` as the `.` will refer to the current element in map. Fortunately we can refer to the parent environment here as well. But this is very difficult to read, so either do not use the pipe in such cases or predefine your functions. 
 
 
 ```r
-c(': ', ' -- ', '\n') %>% 
+c(': ', ' -- ') %>% 
     {map(
         names(calendar_consts),
         ~ stringr::str_c(., parent.env(environment())$'.', calendar_consts[[.]])
@@ -275,10 +276,9 @@ c(': ', ' -- ', '\n') %>%
 ```
 ## [[1]]
 ## [1] "num_hours_in_day: 24"   "num_hours_in_day -- 24"
-## [3] "num_hours_in_day\n24"  
 ## 
 ## [[2]]
-## [1] "num_days_in_week: 7"   "num_days_in_week -- 7" "num_days_in_week\n7"
+## [1] "num_days_in_week: 7"   "num_days_in_week -- 7"
 ```
 
 ## Conclusions
