@@ -124,7 +124,7 @@ map_chr(
 )
 ```
 
-The above does not work as intended as `.` in `calendar_consts[[.]]` refers to the variable forwarded by ` %>% `, in this case the already transformed variable name. Luckily we can refer to the current element in map with `.x` as well.
+The above does not work as intended as `.` in `calendar_consts[[.]]` refers to the variable forwarded by  ` %>% `, in this case the already transformed variable name. Luckily we can refer to the current element in map with `.x` as well.
 
 ```{r}
 map_chr(

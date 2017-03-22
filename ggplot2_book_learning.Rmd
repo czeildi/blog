@@ -1,0 +1,14 @@
+---
+title: "ggplot2 book learnings"
+output: 
+    html_document:
+        keep_md: yes
+        fig_width: 6
+        fig_height: 4
+---
+
+```{r, echo=FALSE, warning=FALSE}
+library(ggplot2)
+library(magrittr)
+library(data.table)
+```
